@@ -1,0 +1,272 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width,user-scalable=no">
+    <title>webppt-client</title>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link href="http://cdn.bootcss.com/photoswipe/4.1.1/default-skin/default-skin.css" rel="stylesheet"> 
+    <link href="http://cdn.bootcss.com/photoswipe/4.1.1/photoswipe.css" rel="stylesheet">
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.js"></script>
+    
+    <script src="http://119.23.234.151:828/wwwroot/js/photoswipe.js"></script> 
+    <script src="http://cdn.bootcss.com/photoswipe/4.1.1/photoswipe-ui-default.js"></script>
+    <link href="http://119.23.234.151:828/wwwroot/css/reset.css" rel="stylesheet" />
+
+    <script type="text/javascript">
+        var serverurl = "http://119.23.234.151:828";
+        var gallery;
+        var typeNo = 2; //1:服务端 2：客户端
+        var items = [];
+        var photoList; //相片json对象
+        var imgIndex = 1;//每个类型相片个数
+        var listIndex = 1;//类型个数
+        var count = 0; //总数
+
+        var openPhotoSwipe = function (index) {
+            var pswpElement = document.querySelectorAll('.pswp')[0];
+            // build items array
+            // define options (if needed)
+            var options = {
+                loop: false,
+                closeOnScroll: false,
+                // history & focus options are disabled on CodePen
+                history: true,
+                focus: true,
+                index: index, // 从哪一张图片开始
+                showAnimationDuration: 0,
+                hideAnimationDuration: 0
+
+            };
+            gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, options);
+            gallery.init();
+
+        };
+
+        function preload(img) {
+
+            if (img!=null) {
+                var imgsrc = $(img).attr("src");
+                var imgwidth = $(img).width();
+                var imgheight = $(img).height();
+                var divwidth = $(img).parent().width();
+                var divheight = $(img).parent().height();
+                var no = (imgwidth / divwidth).toFixed(2);
+                if ((imgheight / no).toFixed(2) <= divheight + 20) {
+                    $(img).width("100%");
+                } else {
+                    $(img).height("100%");
+                }
+
+                var arr = { src: imgsrc, w: imgwidth, h: imgheight, index: count-1 };
+                items.push(arr);
+
+            }
+
+
+            if (photoList.length >= listIndex) {
+
+                if (photoList[listIndex - 1].photoList.length >= imgIndex) {
+                    count = count + 1;
+                    $(".type" + (listIndex - 1)).find("ul").append('<li><img count="' + count + '" bigsrc="' + photoList[listIndex - 1].photoList[imgIndex - 1].bigPath + '" src="' + photoList[listIndex - 1].photoList[imgIndex - 1].smallPath + '" alt="' + photoList[listIndex - 1].photoList[imgIndex - 1].title + '" title="' + photoList[listIndex - 1].photoList[imgIndex - 1].title + '"  onload="preload(this)"/><div class="remark">' + photoList[listIndex - 1].photoList[imgIndex - 1].title + '</div></li>')
+                    imgIndex = imgIndex + 1;
+                } else {
+                    imgIndex = 1;
+                    listIndex = listIndex + 1;
+                    preload(null);
+                }
+
+            } else {
+                //  alert(JSON.stringify(items));
+
+                $(".type li").click(function () {
+                    var count = $(this).find("img").attr('count');
+                    openPhotoSwipe(count - 1);
+                })
+
+
+
+
+               var isSuccess = 1;
+               var interval=   setInterval(function () {
+
+                    if (isSuccess == 1) {
+                        $.ajax({
+                            type: "get",
+                            url: serverurl+"/api/Default/getState",
+                            dataType: "json",
+                            cache: false,
+                           // data: { index: index, zoomLevel: zoomLevel, offsetX: offsetX, offsetY: offsetY, scrollTop: scrollTop },
+                            error: function (a, b, c) {
+                                //  alert(c);
+                            },
+                            success: function (data) {
+                               
+                                if (typeof (data[0]) != "undefined" && typeof (data[0].index) != "undefined") {
+                                    $(document).scrollTop(data[0].scrollTop);
+                                    if (typeof (gallery) != "undefined") {
+                                        if (data[0].index != "-1") {
+                                            var cindex = gallery.currItem.index;
+                                            var obj = gallery.getobj();
+                                            if (obj.isOpen) { 
+                                                if (parseInt(data[0].index) != cindex) {
+                                                    gallery.goTo(parseInt(data[0].index));
+                                                } 
+                                            } else {
+                                                openPhotoSwipe(parseInt(data[0].index));
+                                            }
+                                            if ($("#occlusion").length == 0) { 
+                                                $("body").append("<div id='occlusion' style='width: 100%; height: 100%; position: absolute; z-index: 1000000; top: 0px; left: 0px;'></div>")
+                                            }
+                                            gallery.applyZoomPan(data[0].zoomLevel, data[0].offsetX, data[0].offsetY);
+                                        } else {
+                                            if ($("#occlusion").length > 0) {
+                                                $("#occlusion").remove();
+                                            }
+                                            gallery.close();
+                                        }
+                                    } else {
+                                        if (data[0].index != "-1") {
+                                            openPhotoSwipe(parseInt(data[0].index));
+                                            if ($("#occlusion").length == 0) {
+                                                $("body").append("<div id='occlusion' style='width: 100%; height: 100%; position: absolute; z-index: 1000000; top: 0px; left: 0px;'></div>")
+                                            }
+                                            gallery.applyZoomPan(data[0].zoomLevel, data[0].offsetX, data[0].offsetY);
+                                        } else {
+                                            if ($("#occlusion").length > 0) {
+                                                $("#occlusion").remove();
+                                            }
+                                            gallery.close();
+                                        }
+                                    }
+                                }
+
+                                isSuccess = 1;
+                               
+                            }
+                        })
+                    }
+                    
+
+                }, 500);
+
+
+            }
+        }
+
+        $(function () {
+            $.ajax({
+                type: "get",
+                url: serverurl + "/api/Default/GetPhotoList",
+                dataType: "json",
+                cache: false,
+                data: { type: typeNo },
+                error: function (a, b, c) {
+                  //  alert(c);
+                },
+                success: function (data) {
+                    var ishavedefault = 0;
+                    photoList = data;
+                    for (var i = 0; i < data.length; i++) {
+                        if (data[i].name == "default") {
+
+                            ishavedefault = 1;
+                            listIndex = listIndex + 1;
+                            var img = new Image();
+                            img.src = data[i].photoList[0].bigPath;
+                            count = count + 1;
+                            var nowcount = count;
+                            img.onload = function () {
+                                var arr = { src: img.src, w: img.width, h: img.height, index: nowcount - 1 };
+                                items.push(arr);
+                                preload(null);
+                                  setTimeout(function () {
+                                      openPhotoSwipe(nowcount - 1);
+                                }, 100)
+                            };
+
+                            continue;
+                        }
+                        $(".main").append('<div class="type type' + i + '"><p class="title">' + data[i].name + '</p> <ul></ul></div><div style="clear:both; margin-bottom: 30px;"></div>')
+                    }
+                    if (ishavedefault==0) {
+                        preload(null);
+                    }
+
+                }
+            })
+
+           
+
+
+        })
+
+
+
+    </script>
+</head>
+<body>
+    <div class="content">
+
+        <div class="main">
+
+
+        </div>
+
+
+
+        <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="pswp__bg"></div>
+            <!-- Slides wrapper with overflow:hidden. -->
+            <div class="pswp__scroll-wrap">
+                <!-- Container that holds slides. PhotoSwipe keeps only 3 slides in DOM to save memory. -->
+                <div class="pswp__container">
+                    <!-- don't modify these 3 pswp__item elements, data is added later on -->
+                    <div class="pswp__item"></div>
+                    <div class="pswp__item"></div>
+                    <div class="pswp__item"></div>
+                </div>
+                <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+                <div class="pswp__ui pswp__ui--hidden">
+                    <div class="pswp__top-bar">
+                        <!--  Controls are self-explanatory. Order can be changed. -->
+                        <div class="pswp__counter"></div>
+                        <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                        <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                        <div class="pswp__preloader">
+                            <div class="pswp__preloader__icn">
+                                <div class="pswp__preloader__cut">
+                                    <div class="pswp__preloader__donut"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                        <div class="pswp__share-tooltip"></div>
+                    </div>
+                    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+                    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button>
+                    <div class="pswp__caption">
+                        <div class="pswp__caption__center"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div style=" overflow: hidden;">
+        <video width="1" height="0" controls="controls" autoplay="autoplay" loop="loop" muted="muted">
+            <source src="http://www.runoob.com/try/demo_source/movie.mp4" type="video/mp4">
+            <source src="http://www.runoob.com/try/demo_source/movie.ogg" type="video/ogg">
+            防止黑屏
+        </video>
+    </div>
+  
+</body>
+</html>
