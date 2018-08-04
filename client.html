@@ -9,26 +9,20 @@
     <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.js"></script>
      
 </head>
-<body style="margin:0px; padding:0px; display:block; width:100%">
+<body style="margin:0px; padding:0px;">
    
         <iframe scrolling="no" id="main" name="main" frameborder="0" src="http://119.23.234.151:828/wwwroot/client.html" style="min-height:600px;width:100%;height:100%;margin:0px; padding:0px;"></iframe>
    
      <script type="text/javascript">
          var url = "";
-         var no = 0;
          function iframeonload(ifr) {
-             if (no==0) {
-                 ifr.postMessage("getheight", url);
-                 no++;
-             }
-           
+           //  ifr.postMessage("getheight", url);
          }
          window.addEventListener('message', function (event) {
              
              console.info(event.origin + "_" + event.data);
-             $("body").height(event.data);
-             var iframe = document.getElementById("main");
-             iframe.src = iframe.src;
+             $("#main").height(event.data);
+             
          });
           
          $(document).ready(function(e){  
