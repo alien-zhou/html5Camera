@@ -10,8 +10,7 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta id="theme-color" name="theme-color" content="#ffffff">  
   <title>WebRTC</title>
-
-  
+     
 
 </head>
 
@@ -25,6 +24,30 @@
  
  
     <script type="text/javascript"> 
+
+
+        var video = document.querySelector('video');
+             
+        //初始化摄像头
+        if (navigator.getUserMedia) { // Standard
+            navigator.getUserMedia({ "video": true }, function (stream) {
+                video.src = webkitURL.createObjectURL(stream); 
+            }, errBack);
+        } else if (navigator.webkitGetUserMedia) { // WebKit-prefixed
+            navigator.webkitGetUserMedia({ "video": true }, function (stream) {
+                video.src = window.webkitURL.createObjectURL(stream); 
+            }, errBack);
+        }
+        else if (navigator.mozGetUserMedia) { // Firefox-prefixed
+            navigator.mozGetUserMedia({ "video": true }, function (stream) {
+                video.src = window.URL.createObjectURL(stream); 
+            }, errBack);
+        };
+        function errBack() {
+            console.log('err');
+        }
+
+
     var errorElement = document.querySelector('#errorMsg');
     var video = document.querySelector('video');
          
