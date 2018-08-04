@@ -15,12 +15,12 @@
    
      <script type="text/javascript">
          var url = "";
-         function iframeonload(iframe) {
-             url = iframe.src;
-             iframe.postMessage("get", iframe.src); 
+         function iframeonload(ifr) {
+             ifr.postMessage("getheight", url);
          }
-         window.addEventListener('messageheight', function (ev) {
-             document.title = event.origin + "_" + event.data;
+         window.addEventListener('message', function (event) {
+             
+             console.info(event.origin + "_" + event.data);
              if (ev.origin === url) {
                  //  alert('从' + ev.origin + '传过来的消息：' + ev.data);
                  // $("#main").height(ev.data);
@@ -29,16 +29,18 @@
          });
           
          $(document).ready(function(e){  
-             var iframe = document.getElementById("main");    
+             var iframe = document.getElementById("main");
+             url = iframe.src;
+             var  ifr = window.frames[0];
              if (iframe.attachEvent) {    
                  iframe.attachEvent("onload", function() {    
                      //iframe加载完成后你需要进行的操作 
-                     iframeonload(iframe);
+                     iframeonload(ifr);
                  });    
              } else {    
                  iframe.onload = function() {    
                      //iframe加载完成后你需要进行的操作  
-                     iframeonload(iframe);
+                     iframeonload(ifr);
                  };    
              }    
          });
