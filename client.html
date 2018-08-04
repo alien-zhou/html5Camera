@@ -21,7 +21,7 @@
          window.addEventListener('message', function (event) {
              
              console.info(event.origin + "_" + event.data);
-             $("#main").height(event.data);
+             $("body").height(event.data);
              
          });
           
