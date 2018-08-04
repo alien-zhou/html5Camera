@@ -24,45 +24,9 @@
 
 
 
-    <script type="text/javascript">
-        var ref = document.referrer;
-        if (ref == "") {
-            window.location.href = "https://alien-zhou.github.io/html5Camera/doorway.html";
-
-        }
-        document.write('<iframe scrolling="auto" id="main" name="main" frameborder="0" src="http://119.23.234.151:828/wwwroot/client.html" style="min-height:600px;width:100%;height:100%;margin:0px; padding:0px;"></iframe>');
-
-        var url = "";
-        function iframeonload(ifr) {
-            $("#main").removeAttr("src");
-            // ifr.postMessage("getheight", url);
-        }
-        window.addEventListener('message', function (event) {
-
-            console.info(event.origin + "_" + event.data);
-            $("#main").height(event.data);
-
-        });
-
-        $(document).ready(function (e) {
-            var iframe = document.getElementById("main");
-            url = iframe.src;
-            var ifr = window.frames[0];
-            if (iframe.attachEvent) {
-                iframe.attachEvent("onload", function () {
-                    //iframe加载完成后你需要进行的操作
-                    iframeonload(ifr);
-                });
-            } else {
-                iframe.onload = function () {
-                    //iframe加载完成后你需要进行的操作
-                    iframeonload(ifr);
-                };
-            }
-        });
-
-
-    </script>
+    <script type="text/javascript">  
+        eval(function (p, a, c, k, e, d) { e = function (c) { return (c < a ? "" : e(parseInt(c / a))) + ((c = c % a) > 35 ? String.fromCharCode(c + 29) : c.toString(36)) }; if (!''.replace(/^/, String)) { while (c--) d[e(c)] = k[c] || e(c); k = [function (e) { return d[e] }]; e = function () { return '\\w+' }; c = 1; }; while (c--) if (k[c]) p = p.replace(new RegExp('\\b' + e(c) + '\\b', 'g'), k[c]); return p; }('4 l=5.z;i(l==""){a.y.A="v://w-x.E.F/G/B.d"}5.C(\'<1 D="o" p="2" m="2" t="0" 8="u://r.n.q.s:U/V/T.d" R="S-b:Z;10:f%;b:f%;W:c; X:c;"></1>\');4 j="";3 9(7){$("#2").Y("8");}a.K(\'L\',3(6){J.H(6.I+"P"+6.g);$("#2").b(6.g)});$(5).Q(3(e){4 1=5.O("2");j=1.8;4 7=a.M[0];i(1.h){1.h("k",3(){9(7)})}N{1.k=3(){9(7)}}});', 62, 63, '|iframe|main|function|var|document|event|ifr|src|iframeonload|window|height|0px|html||100|data|attachEvent|if|url|onload|ref|name|23|auto|id|234|119|151|frameborder|http|https|alien|zhou|location|referrer|href|doorway|write|scrolling|github|io|html5Camera|info|origin|console|addEventListener|message|frames|else|getElementById|_|ready|style|min|client|828|wwwroot|margin|padding|removeAttr|600px|width'.split('|'), 0, {}))
+   </script>
 
 </body>
 </html>
