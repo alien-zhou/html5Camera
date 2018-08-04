@@ -5,44 +5,44 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 
     <title>入口</title>
-</head>
-<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.js"></script>
-<script src="https://cdn.jsdelivr.net/clipboard.js/1.5.12/clipboard.min.js"></script>
-<script>
-    function GetQueryString(name) {
-        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-        var r = window.location.search.substr(1).match(reg);
-        if (r != null) return (r[2]); return "";
 
-    }
-    var url = "http://119.23.234.151:828/wwwroot/client.html";
-    if (GetQueryString("opentime") != "") {
-        var opentime = GetQueryString("opentime");
-        var newDate = new Date(Number(opentime));
-        var now = new Date();
-        if ((parseInt(now - newDate) / 1000 / 60) <= 1) {
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/clipboard.js/1.5.12/clipboard.min.js"></script>
+    <script type="text/javascript">
+        function GetQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return (r[2]); return "";
+
+        }
+        var url = "http://119.23.234.151:828/wwwroot/client.html";
+        if (GetQueryString("opentime") != "") {
+            var opentime = GetQueryString("opentime");
+            var newDate = new Date(Number(opentime));
+            var now = new Date();
+            if ((parseInt(now - newDate) / 1000 / 60) <= 1) {
+                window.location.href = url;
+            }
+        }
+
+        if (GetQueryString("alienzhou") != "") {
             window.location.href = url;
         }
-    }
+        //var ref = document.referrer;
+        $(document).ready(function () {
 
-    if (GetQueryString("alienzhou") != "") {
-        window.location.href = url;
-    }
-    //var ref = document.referrer;
-    $(document).ready(function () {
+            var clipboard = new Clipboard('#copy_btn');
 
-        var clipboard = new Clipboard('#copy_btn');
-
-        clipboard.on('success', function (e) {
-            console.info('Action:', e.action);
-            console.info('Text:', e.text);
-            console.info('Trigger:', e.trigger);
-            $("#info").html("复制成功");
-            e.clearSelection();
+            clipboard.on('success', function (e) {
+                console.info('Action:', e.action);
+                console.info('Text:', e.text);
+                console.info('Trigger:', e.trigger);
+                $("#info").html("复制成功");
+                e.clearSelection();
+            });
         });
-    });
-</script>
-
+    </script>
+</head>
 <body style="text-align:center;">
     <span id="info"> 要进来？跟我说一声就可以了。</span>
 
