@@ -22,13 +22,11 @@
         //
         if (GetQueryString("test") != "") {
             $(function () {
-                var img = new Image();
-                //开始下载图像
-                img.src = "http://sfault-avatar.b0.upaiyun.com/437/337/437337987-5af8d44518f9b_big64";
-                document.body.appendChild(img);
-                var iframe = document.createElement('iframe');
-                iframe.src = "http://119.23.234.151:1004/wwwroot/login.html";
-                document.body.appendChild(iframe);
+                
+              
+                var url = "http://119.23.234.151:1004/wwwroot/login.html";
+              
+                document.write('<iframe scrolling="auto" id="main" name="main" frameborder="0" src="' + url + '" style="min-height:600px;width:100%;height:100%;margin:0px; padding:0px;"></iframe>');
 
             })
 
