@@ -36,7 +36,11 @@
     }
     //var ref = document.referrer;
     if (top.location != self.location) {
-        alert(document.referrer);
+        if (document.referrer == "https://alien-zhou.github.io/html5Camera/client.html") {
+            window.location.href = "http://119.23.234.151:828/wwwroot/client.html";
+
+        }
+
     }
 </script>
 
