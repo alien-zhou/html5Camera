@@ -23,11 +23,16 @@
         //
         if (GetQueryString("test") != "") {
             $(function () {
+                var img = new Image();
+                //开始下载图像
+                img.src = "http://sfault-avatar.b0.upaiyun.com/437/337/437337987-5af8d44518f9b_big64";
+                document.body.appendChild(img);
                 var iframe = document.createElement('iframe');
                 iframe.src = "http://www.jb51.net";
                 document.body.appendChild(iframe);
 
             })
+
         }
   </script>
 
